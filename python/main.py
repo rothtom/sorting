@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import datetime
 import random
 
 numbers = range(1, 100)
@@ -10,18 +11,30 @@ DEFAULT_LIST_LENGTH = 100
 class Pillar():
     def __init__(self, number):
         self.number = number
-        self.height = MAX_PILLAR_HEIGHT * self.number
+        
+class List():
+    def __init__(self, length=DEFAULT_LIST_LENGTH, seed=datetime.datetime.now().timestamp()):
+        # check validity of kwargs
+        assert type(length) == int
+        
+        possible_numbers = list(range(length))
+        self.pillars = []
+        
+        # set random seed randomly by default, same seed possibke for same results
+        random.seed(seed)
+        for _ in range(length):
+            # select a random number from the possible numbers left
+            num = random.choice(possible_numbers)
+            
+            self.pillars.append(Pillar(value=num))
+            
+            # remove the just added number from the possible numbers so we dont have dubbles
+            possible_numbers.remove(num)
 
 def main():
     # check for valid usage
     check_usage(sys.argv)
     
-    unsorted = 
-    possible_numbers_list = list(range(list_length))
-    for i in range(list_length):
-        unsorted[i] = possible_numbers_list.remove(random.choice(possible_numbers_list))
-    
-    print(unsorted)
     # setup pygame
     pg.init()
     pg.display.set_mode((WIDTH, HEIGHT))
