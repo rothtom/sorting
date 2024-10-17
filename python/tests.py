@@ -11,12 +11,22 @@ def main():
 def test_list_creation():
     # test list creation with a list of length 1 
     list = m.List(length=1, seed=1, algorithm="bogo")
+    assert list.algorithm == "bogo"
     assert list.pillars[0].value == 1
+    
+    #test list algorythm type
+    list = m.List(length=1, seed=1, algorithm="bogo")
+    assert list.algorithm == "bogo"
+    list = m.List(length=1, seed=1, algorithm="bogo-sort")
+    assert list.algorithm == "bogo"
     
     # test list creation with fixed list:
     list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bogo", start_list=SEMI_RANDOM_LIST)
     for i in range(len(SEMI_RANDOM_LIST)):
         assert list.pillars[i].value == SEMI_RANDOM_LIST[i]
+        
+    list = m.List(algorithm="bogo", start_list=SEMI_RANDOM_LIST)
+    assert list.algorithm == "bogo"
 
 def test_check_sorted():
     # test ckheck sorted function
@@ -27,8 +37,9 @@ def test_check_sorted():
     assert list.check_sorted() == False
     
 def test_bubble_sort():
-    list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bogo", start_list=SEMI_RANDOM_LIST)
-    list.bogo_sort()
+    list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bubble", start_list=SEMI_RANDOM_LIST)
+    list.sort()
+    print(list)
     assert list.check_sorted() == True
     
 if __name__ == "__main__":
