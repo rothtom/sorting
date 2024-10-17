@@ -6,6 +6,7 @@ SEMI_RANDOM_LIST = [2, 4, 3, 5, 1]
 def main():
     test_list_creation()
     test_check_sorted()
+    test_bubble_sort()
     
 def test_list_creation():
     # test list creation with a list of length 1 
@@ -24,6 +25,11 @@ def test_check_sorted():
     
     list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bogo", start_list=SEMI_RANDOM_LIST)
     assert list.check_sorted() == False
+    
+def test_bubble_sort():
+    list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bogo", start_list=SEMI_RANDOM_LIST)
+    list.bogo_sort()
+    assert list.check_sorted() == True
     
 if __name__ == "__main__":
     main()

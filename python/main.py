@@ -10,15 +10,20 @@ WIDTH = 1280
 MAX_PILLAR_HEIGHT = int((HEIGHT - 20) / 100)
 DEFAULT_LIST_LENGTH = 100
 POSSIBLE_LAGORITHMS = ["bogo", "bogo-sort", ]
+
 class Pillar():
     def __init__(self, value):
         self.value = value
+        self.comparing = False
+        self.selected = False
         
 class List():
     def __init__(self, algorithm, length=0, seed=1, start_list=None):
         # check validity of kwargs
         assert type(length) == int
         assert algorithm in POSSIBLE_LAGORITHMS
+        
+        self.algorithm = algorithm.replace("-sort", "")
         
         # if you dont want a random list but rather a preconfigured one
         if start_list != None:
@@ -45,6 +50,51 @@ class List():
             if self.pillars[i].value > self.pillars[i + 1].value:
                 return False
         return True
+    
+    def sort(self):
+        if self.algorithm == "bogo":
+            self.bogo_sort()
+        elif self.algorithm == "merge":
+            self.merge_sort()
+    
+    def bogo_sort(self):
+        pass
+    
+    def selection_sort(self):
+        pass
+
+    def merge_sort(self):
+        pass
+
+    def bubble_sort(self):
+        #
+        for i in range(len(self.pillars)):
+            swapped = False
+            for j in range( len(self.pillars) - 1):
+                
+                # inefficient but makes programming easier, those are the i-th and i+1-th Pillars from the pillarlist in List
+                p1 = self.pillars[j]
+                p2 = self.pillars[j + 1]
+                # for visualisation important
+                p1.selected = True
+                p2.comparing = True
+                # if the left one is smaller -> switch them
+                if self.pillars[i].value > self.pillars[i + 1].value:
+                    # algorythm goes on until he gets through wihout switching something
+                    swapped = True
+                    # switches the two comapred elements
+                    p1, p2 = p2, p1
+                # for visualisation important
+                p1.selected = False
+                p2.comparing = False
+            if swapped == False:
+                break
+    def __str__(self):
+        print(f"len: {len(self.pillars)}")
+        print(f"sorted: {self.check_sorted()}")
+        for i in range(len(self.pillars)):
+            print(self.pillars[i].value, sep=", ", end="")
+        print(end="\n")
 
 def main():
     # check for valid usage
