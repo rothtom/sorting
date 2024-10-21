@@ -1,13 +1,7 @@
-import pygame as pg
-import argparse
-# import sys
 import datetime
 import random
 
-numbers = range(1, 100)
-HEIGHT = 720
-WIDTH = 1280
-MAX_PILLAR_HEIGHT = int((HEIGHT - 20) / 100)
+DEFAULT_RANDOM_SEED = datetime.datetime.now().timestamp()
 DEFAULT_LIST_LENGTH = 100
 POSSIBLE_LAGORITHMS = ["bogo", "bogo-sort", "bubble", "bubble_sort", ]
 
@@ -18,7 +12,9 @@ class Pillar():
         self.selected = False
         
 class List():
-    def __init__(self, algorithm, length=None, seed=datetime.datetime.now().timestamp(), start_list=None):
+    # length ist hier optional, um besser mit bereits gegebenen Listen testen zu können.
+    # wenn es eine liste zum starten gibt, ist die länge unnötig
+    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_list=None):
         """
         Creates a list of Pillars, randomly arranged, except if there is a start list of values - then it uses those.
         - start_list is an option for giving a prearranged list of values for the values of the pillars.
@@ -36,6 +32,7 @@ class List():
         
         # if you dont want a random list but rather a preconfigured one
         if start_list != None:
+            assert type(start_list) == tuple
             self.pillars = []
             for value in start_list:
                 self.pillars.append(Pillar(value=value))
@@ -88,66 +85,33 @@ class List():
         """
         # go through every item in the list for every item there is - so if the last one has to be at the front or the first one all the way in the back 
         # you have to switch that item a total of n - 1 times
-        for i in range(len(self.pillars)):
+        for _ in range(len(self.pillars)):
             swapped = False
             
             # go through every item in the list and comapre it to its right neighbour
-            for j in range( len(self.pillars) - 1):
+            for j in range(len(self.pillars) - 1):
                 
-                # inefficient but makes programming easier, those are the i-th and i+1-th Pillars from the pillarlist in List
-                p1 = self.pillars[j]
-                p2 = self.pillars[j + 1]
                 # for visualisation important
-                p1.selected = True
-                p2.comparing = True
+                self.pillars[j].selected = True
+                self.pillars[j + 1].comparing = True
                 # if the left one is smaller -> switch them
-                if self.pillars[i].value > self.pillars[i + 1].value:
+                if self.pillars[j].value > self.pillars[j + 1].value:
                     # algorythm goes on until he gets through wihout switching something
                     swapped = True
                     # switches the two comapred elements
-                    p1, p2 = p2, p1
+                    ptemp = self.pillars[j]
+                    self.pillars[j] = self.pillars[j + 1]
+                    self.pillars[j + 1] = ptemp
+                    
                 # for visualisation important
-                p1.selected = False
-                p2.comparing = False
+                self.pillars[j].selected = False
+                self.pillars[j + 1].comparing = False
             if swapped == False:
                 break
+            
     def __str__(self):
         string = f"len: {len(self.pillars)}\nsorted: {self.check_sorted()}\n"
         for i in range(len(self.pillars)):
-            string = string + str(self.pillars[i].value)
+            string = string + str(self.pillars[i].value) + " "
         string = string + "\n"
-        print(string)
         return string
-
-def main():
-    # check for valid usage
-    args = check_usage()
-    
-    list = List(length=args["length"], seed=args["seed"], algorithm=args["algorithm"])
-    
-    # setup pygame
-    pg.init()
-    pg.display.set_mode((WIDTH, HEIGHT))
-
-
-def check_usage():
-    # check for right usage of command line arguments
-    parser = argparse.ArgumentParser(
-        prog="main.py",
-            usage="python main.py --list_length {int} (deafult=100) --seed {float} (default=current timestamp)",
-    )
-    parser.add_argument("-l", "--length", default=DEFAULT_LIST_LENGTH, type=int)
-    parser.add_argument("-s", "--seed", default=datetime.datetime.now().timestamp(), type=float)
-    # for now not required and defaults to bogo
-    parser.add_argument("-a", "--algorithm", 
-                        #required=True,
-                        # add more algorithms later
-                        choices=POSSIBLE_LAGORITHMS,
-                        default="bogo"
-                        )
-    # args is a dict of the key-value pairs from the command-line
-    args = vars(parser.parse_args())
-    return args
-
-if __name__=="__main__":
-    main()

@@ -2,7 +2,7 @@ import pytest
 import main as m
 
 SORTED_LIST = [1, 2, 3, 4, 5]
-SEMI_RANDOM_LIST = [2, 4, 3, 5, 1]
+SEMI_RANDOM_TUPLE = tuple([2, 4, 3, 5, 1])
 def main():
     test_list_creation()
     test_check_sorted()
@@ -21,25 +21,24 @@ def test_list_creation():
     assert list.algorithm == "bogo"
     
     # test list creation with fixed list:
-    list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bogo", start_list=SEMI_RANDOM_LIST)
-    for i in range(len(SEMI_RANDOM_LIST)):
-        assert list.pillars[i].value == SEMI_RANDOM_LIST[i]
+    list = m.List(length=len(SEMI_RANDOM_TUPLE), algorithm="bogo", start_list=SEMI_RANDOM_TUPLE)
+    for i in range(len(SEMI_RANDOM_TUPLE)):
+        assert list.pillars[i].value == SEMI_RANDOM_TUPLE[i]
         
-    list = m.List(algorithm="bogo", start_list=SEMI_RANDOM_LIST)
+    list = m.List(algorithm="bogo", start_list=SEMI_RANDOM_TUPLE)
     assert list.algorithm == "bogo"
 
 def test_check_sorted():
     # test ckheck sorted function
-    list = m.List(length=len(SORTED_LIST), algorithm="bogo", start_list=SORTED_LIST)
+    list = m.List(algorithm="bogo", start_list=tuple(SORTED_LIST))
     assert list.check_sorted() == True
     
-    list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bogo", start_list=SEMI_RANDOM_LIST)
+    list = m.List(algorithm="bogo", start_list=SEMI_RANDOM_TUPLE)
     assert list.check_sorted() == False
     
 def test_bubble_sort():
-    list = m.List(length=len(SEMI_RANDOM_LIST), algorithm="bubble", start_list=SEMI_RANDOM_LIST)
+    list = m.List(algorithm="bubble", start_list=SEMI_RANDOM_TUPLE)
     list.sort()
-    print(list)
     assert list.check_sorted() == True
     
 if __name__ == "__main__":
