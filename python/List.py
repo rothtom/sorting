@@ -20,7 +20,7 @@ PILLAR_PADDING_REL = 0.01
 class List():
     # length ist hier optional, um besser mit bereits gegebenen Listen testen zu können.
     # wenn es eine liste zum starten gibt, ist die länge unnötig
-    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_list=None, steps=False, delay=0):
+    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_list=None, delay=0):
         """
         Creates a list of Pillars, randomly arranged, except if there is a start list of values - then it uses those.
         - start_list is an option for giving a prearranged list of values for the values of the pillars.
@@ -72,7 +72,7 @@ class List():
         assert type(steps) == bool
         self.steps = steps
         
-        assert type(delay) == int
+        assert type(delay) == float
         assert delay >= 0
         self.delay = delay
         
@@ -135,6 +135,7 @@ class List():
                     self.pillars[j].selected = False
                     self.pillars[j + 1].comparing = False
                 
+                time.sleep(self.delay)
             if swapped == False:
                 break
             
@@ -147,7 +148,6 @@ class List():
             x = int((PILLAR_SPACE * i) + (PILLAR_SPACE * (PILLAR_PADDING_REL / 2)))
             self.pillars[i].draw_pillar(self.screen, x, y, pillar_width, pillar_height)
         pg.display.flip()
-        return 0
             
     def __str__(self):
         string = f"len: {len(self.pillars)}\nsorted: {self.check_sorted()}\n"

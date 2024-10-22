@@ -17,8 +17,7 @@ def check_usage():
                         default="bubble"
                         )
     parser.add_argument("--start_list", default=None, type=str, help="A series of ints seperated by ONLY commas")
-    parser.add_argument("-d", "--delay", default=0, type=int, help="how many secounds you want the comuter to wait after every step")
-    parser.add_argument("--steps", default=False, type=bool, help="bool - whether you want to click through every step yourserlf")
+    parser.add_argument("-d", "--delay", default=0, type=float, help="how many secounds you want the comuter to wait after every step")
     # args is a dict of the key-value pairs from the command-line
     args = vars(parser.parse_args())
     
