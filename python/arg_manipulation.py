@@ -1,6 +1,5 @@
 import argparse
-
-from main import DEFAULT_LIST_LENGTH, POSSIBLE_LAGORITHMS, DEFAULT_RANDOM_SEED
+from List import DEFAULT_LIST_LENGTH, DEFAULT_RANDOM_SEED, POSSIBLE_ALGORITHMS
 
 def check_usage():
     # check for right usage of command line arguments
@@ -14,7 +13,7 @@ def check_usage():
     parser.add_argument("-a", "--algorithm", 
                         #required=True,
                         # add more algorithms later
-                        choices=POSSIBLE_LAGORITHMS,
+                        choices=POSSIBLE_ALGORITHMS,
                         default="bubble"
                         )
     parser.add_argument("--start_list", default=None, type=str, help="A series of string seperated by ONLY commas")
