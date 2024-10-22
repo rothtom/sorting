@@ -1,4 +1,5 @@
 import datetime
+import time
 import random
 import pygame as pg
 
@@ -11,7 +12,7 @@ POSSIBLE_ALGORITHMS = ["bogo", "bogo-sort", "bubble", "bubble_sort", ]
 HEIGHT = 720
 WIDTH = 1280
 
-MAX_PILLAR_HEIGHT = int(HEIGHT * 0.8)
+MAX_PILLAR_HEIGHT = int(HEIGHT * 0.9)
 MARGIN = (HEIGHT - MAX_PILLAR_HEIGHT) / 2
 PILLAR_PADDING_REL = 0.01
 
@@ -62,7 +63,8 @@ class List():
         self.length = len(self.pillars)
         global PILLAR_SPACE
         PILLAR_SPACE = int(WIDTH / self.length)
-    
+
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
     def check_sorted(self):
         for i in range(len(self.pillars) - 1):
             if self.pillars[i].value > self.pillars[i + 1].value:
@@ -114,17 +116,27 @@ class List():
                 # for visualisation important
                 self.pillars[j].selected = False
                 self.pillars[j + 1].comparing = False
+                self.draw()
+                time.sleep(0.01)
             if swapped == False:
                 break
             
-    def draw(self, screen):
-        for i in range(len(self.pillars)):
-            pillar_height = MAX_PILLAR_HEIGHT * (self.pillars[i].value / self.length)
-            y = MAX_PILLAR_HEIGHT - (pillar_height)
-            x = (PILLAR_SPACE * i) + (PILLAR_SPACE * (PILLAR_PADDING_REL / 2))
-            pillar_width = PILLAR_SPACE * PILLAR_PADDING_REL
-            rect = pg.Rect(y, x, pillar_width, pillar_height)
-            pg.draw.rect(screen, "green", rect)
+    def draw(self):
+        self.screen.fill("black")
+        for i in range(self.length):
+            pillar_height = int(MAX_PILLAR_HEIGHT * (self.pillars[i].value / self.length))
+            pillar_width = int(PILLAR_SPACE - (PILLAR_SPACE * PILLAR_PADDING_REL))
+            y = int(HEIGHT - (pillar_height))
+            x = int((PILLAR_SPACE * i) + (PILLAR_SPACE * (PILLAR_PADDING_REL / 2)))
+            pillar_rect = pg.Rect(x, y, pillar_width, pillar_height)
+            if self.pillars[i].selected:
+                pg.draw.rect(surface=self.screen, color="red", rect=pillar_rect)
+            elif self.pillars[i].comparing:
+                pg.draw.rect(surface=self.screen, color="blue", rect=pillar_rect)
+            else:
+                pg.draw.rect(surface=self.screen, color="green", rect=pillar_rect)
+        pg.display.flip()
+        return 0
             
     def __str__(self):
         string = f"len: {len(self.pillars)}\nsorted: {self.check_sorted()}\n"
