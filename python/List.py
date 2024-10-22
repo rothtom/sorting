@@ -20,7 +20,7 @@ PILLAR_PADDING_REL = 0.01
 class List():
     # length ist hier optional, um besser mit bereits gegebenen Listen testen zu können.
     # wenn es eine liste zum starten gibt, ist die länge unnötig
-    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_list=None):
+    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_list=None, steps=False, delay=0):
         """
         Creates a list of Pillars, randomly arranged, except if there is a start list of values - then it uses those.
         - start_list is an option for giving a prearranged list of values for the values of the pillars.
@@ -29,8 +29,8 @@ class List():
         which ensures a different seed everytime you run it
         - algorithm determins which algorithm is used to sort the list after calling the sort method in it. It has to be one of the options of POSSIBLE_ALGORITHMS
         """
-        # check validity of kwargs
         
+        # check validity of kwargs
         assert algorithm in POSSIBLE_ALGORITHMS
         assert (type(seed) == int or type(seed) == float)
         
@@ -60,11 +60,22 @@ class List():
                 
                 # remove the just added number from the possible numbers so we dont have dubbles
                 possible_numbers.remove(num)
+                
         self.length = len(self.pillars)
+        
         global PILLAR_SPACE
         PILLAR_SPACE = int(WIDTH / self.length)
 
+        pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        
+        assert type(steps) == bool
+        self.steps = steps
+        
+        assert type(delay) == int
+        assert delay >= 0
+        self.delay = delay
+        
     def check_sorted(self):
         for i in range(len(self.pillars) - 1):
             if self.pillars[i].value > self.pillars[i + 1].value:
@@ -88,36 +99,42 @@ class List():
     def merge_sort(self):
         pass
 
-    def bubble_sort(self):
+    def bubble_sort(self, context=None):
         """
         Bubblesorts the list of Pillars in List.pillars
         Bubblesort compares a item to its right one and switches them if neccessarry. The next item becomes the one that compares its right neighbour to itself and so on...
         """
         # go through every item in the list for every item there is - so if the last one has to be at the front or the first one all the way in the back 
         # you have to switch that item a total of n - 1 times
-        for _ in range(len(self.pillars)):
+        for i in range(len(self.pillars)):
             swapped = False
-            
             # go through every item in the list and comapre it to its right neighbour
             for j in range(len(self.pillars) - 1):
                 
                 # for visualisation important
                 self.pillars[j].selected = True
                 self.pillars[j + 1].comparing = True
+                
+                
                 # if the left one is smaller -> switch them
                 if self.pillars[j].value > self.pillars[j + 1].value:
+                    self.draw()
+                    # for visualisation important
+                    self.pillars[j].selected = False
+                    self.pillars[j + 1].comparing = False
                     # algorythm goes on until he gets through wihout switching something
                     swapped = True
                     # switches the two comapred elements
                     ptemp = self.pillars[j]
                     self.pillars[j] = self.pillars[j + 1]
                     self.pillars[j + 1] = ptemp
-                    
-                # for visualisation important
-                self.pillars[j].selected = False
-                self.pillars[j + 1].comparing = False
-                self.draw()
-                time.sleep(0.01)
+                
+                else:
+                    self.draw()
+                    # for visualisation important
+                    self.pillars[j].selected = False
+                    self.pillars[j + 1].comparing = False
+                
             if swapped == False:
                 break
             
@@ -128,13 +145,7 @@ class List():
             pillar_width = int(PILLAR_SPACE - (PILLAR_SPACE * PILLAR_PADDING_REL))
             y = int(HEIGHT - (pillar_height))
             x = int((PILLAR_SPACE * i) + (PILLAR_SPACE * (PILLAR_PADDING_REL / 2)))
-            pillar_rect = pg.Rect(x, y, pillar_width, pillar_height)
-            if self.pillars[i].selected:
-                pg.draw.rect(surface=self.screen, color="red", rect=pillar_rect)
-            elif self.pillars[i].comparing:
-                pg.draw.rect(surface=self.screen, color="blue", rect=pillar_rect)
-            else:
-                pg.draw.rect(surface=self.screen, color="green", rect=pillar_rect)
+            self.pillars[i].draw_pillar(self.screen, x, y, pillar_width, pillar_height)
         pg.display.flip()
         return 0
             
