@@ -69,10 +69,7 @@ class List():
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         
-        assert type(steps) == bool
-        self.steps = steps
-        
-        assert type(delay) == float
+        assert type(delay) == float or type(delay) == int
         assert delay >= 0
         self.delay = delay
         
@@ -110,32 +107,37 @@ class List():
             swapped = False
             # go through every item in the list and comapre it to its right neighbour
             for j in range(len(self.pillars) - 1):
-                
                 # for visualisation important
                 self.pillars[j].selected = True
                 self.pillars[j + 1].comparing = True
                 
+                self.draw()
                 
                 # if the left one is smaller -> switch them
                 if self.pillars[j].value > self.pillars[j + 1].value:
-                    self.draw()
-                    # for visualisation important
-                    self.pillars[j].selected = False
+                    # indicate that those pillars get swapped for visualisation
                     self.pillars[j + 1].comparing = False
-                    # algorythm goes on until he gets through wihout switching something
-                    swapped = True
-                    # switches the two comapred elements
+                    self.pillars[j + 1].swapping = True
+                    # show swapping visually by drawing the list after swapping with the same highlighted Pillars
+                    self.draw()
+                    
+                    # switches the two compared elements
                     ptemp = self.pillars[j]
                     self.pillars[j] = self.pillars[j + 1]
                     self.pillars[j + 1] = ptemp
+                    
+                    # algorithm goes on until he gets through wihout switching something or after i iterations
+                    swapped = True
+                    
+                    # reset the pillars visualisation status after swapping them
+                    self.pillars[j + 1].selected = False
+                    self.pillars[j].swapping = False
                 
                 else:
-                    self.draw()
-                    # for visualisation important
+                    # reset the pillars visualisation status
                     self.pillars[j].selected = False
                     self.pillars[j + 1].comparing = False
-                
-                time.sleep(self.delay)
+            # if the algorithm didnt switch something its sorted. -> quits
             if swapped == False:
                 break
             
@@ -148,6 +150,7 @@ class List():
             x = int((PILLAR_SPACE * i) + (PILLAR_SPACE * (PILLAR_PADDING_REL / 2)))
             self.pillars[i].draw_pillar(self.screen, x, y, pillar_width, pillar_height)
         pg.display.flip()
+        time.sleep(self.delay)
             
     def __str__(self):
         string = f"len: {len(self.pillars)}\nsorted: {self.check_sorted()}\n"
