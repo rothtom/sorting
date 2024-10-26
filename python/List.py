@@ -91,7 +91,23 @@ class List():
         pass
     
     def selection_sort(self):
-        pass
+        
+        for i in range(self.length):
+            smallest_index = i
+            self.pillars[i].selected = True
+            for j in range(self.length):
+                self.draw()
+                self.pillars[smallest_index].selected = True
+                self.pillars[j].comparing = True
+                if self.pillars[smallest_index] < self.pillars[j]:
+                    self.pillars[smallest_index].selected = False
+                    smallest_index = j
+                    self.pillars[smallest_index].comparing = False
+                    self.pillars[smallest_index].selected = True
+                    self.draw()
+            # TODO
+            # switch i-th and smallest_index pillar
+            
 
     def merge_sort(self):
         pass
@@ -103,14 +119,15 @@ class List():
         """
         # go through every item in the list for every item there is - so if the last one has to be at the front or the first one all the way in the back 
         # you have to switch that item a total of n - 1 times
-        for i in range(len(self.pillars)):
+        for i in range(self.length):
+            # draw everything wihtout any hioghlights to show new iteration
+            self.draw()
             swapped = False
             # go through every item in the list and comapre it to its right neighbour
-            for j in range(len(self.pillars) - 1):
+            for j in range(self.length - (i + 1)):
                 # for visualisation important
                 self.pillars[j].selected = True
                 self.pillars[j + 1].comparing = True
-                
                 self.draw()
                 
                 # if the left one is smaller -> switch them
@@ -126,6 +143,8 @@ class List():
                     self.pillars[j] = self.pillars[j + 1]
                     self.pillars[j + 1] = ptemp
                     
+                    
+                    self.draw()
                     # algorithm goes on until he gets through wihout switching something or after i iterations
                     swapped = True
                     

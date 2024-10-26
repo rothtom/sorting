@@ -4,7 +4,7 @@ import pygame as pg
 NORMAL_COLOR = "green"
 SELECTED_COLOR = "red"
 COMPARING_COLOR = "blue"
-SWAPPING_COLOR = "blue"
+SWAPPING_COLOR = "purple"
 
 class Pillar():
     def __init__(self, value):
