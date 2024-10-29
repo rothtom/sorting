@@ -20,4 +20,9 @@ def check_usage():
     parser.add_argument("-d", "--delay", default=0, type=float, help="how many secounds you want the comuter to wait after every step")
     # args is a dict of the key-value pairs from the command-line
     args = vars(parser.parse_args())
+    if args["start_list"]:
+        args["start_list"] = args["start_list"].split(",")
+        for i in range(len(args["start_list"])):
+            args["start_list"][i] = int(args["start_list"][i])
+        args["start_list"] = tuple(args["start_list"])
     return args

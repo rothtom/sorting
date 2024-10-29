@@ -111,23 +111,33 @@ class List():
         pass
     
     def selection_sort(self):
-        
-        for i in range(self.length):
+        self.draw()
+        for i in range(self.length - 1):
             smallest_index = i
-            self.pillars[i].selected = True
-            for j in range(self.length):
-                self.draw()
-                self.pillars[smallest_index].selected = True
+            self.pillars[smallest_index].selected = True
+            self.draw()
+            
+            for j in range(i + 1, self.length):
                 self.pillars[j].comparing = True
-                if self.pillars[smallest_index].value < self.pillars[j].value:
+                if self.pillars[smallest_index].value > self.pillars[j].value:
+                    self.draw()
                     self.pillars[smallest_index].selected = False
                     smallest_index = j
                     self.pillars[smallest_index].comparing = False
                     self.pillars[smallest_index].selected = True
-                    self.draw()
+                self.draw()
+                self.pillars[j].comparing = False
+            
             # TODO
             # switch i-th and smallest_index pillar
-            
+            self.pillars[i].swapping = True
+            self.draw()
+            temp = self.pillars[i]
+            self.pillars[i] = self.pillars[smallest_index]
+            self.pillars[smallest_index] = temp
+            self.draw()
+            self.pillars[smallest_index].swapping = False
+            self.pillars[i].selected = False
 
     def merge_sort(self):
         pass
@@ -139,7 +149,7 @@ class List():
         """
         # go through every item in the list for every item there is - so if the last one has to be at the front or the first one all the way in the back 
         # you have to switch that item a total of n - 1 times
-        for i in range(self.length):
+        for i in range(self.length - 1):
             # draw everything wihtout any hioghlights to show new iteration
             self.draw()
             swapped = False

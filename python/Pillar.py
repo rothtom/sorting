@@ -17,9 +17,9 @@ class Pillar():
         rect = pg.Rect(x, y, width, height)
         if self.comparing:
             pg.draw.rect(screen, COMPARING_COLOR, rect)
-        elif self.selected:
-            pg.draw.rect(screen, SELECTED_COLOR, rect)
         elif self.swapping:
             pg.draw.rect(screen, SWAPPING_COLOR, rect)
+        elif self.selected:
+            pg.draw.rect(screen, SELECTED_COLOR, rect)
         else:
             pg.draw.rect(screen, NORMAL_COLOR, rect)
