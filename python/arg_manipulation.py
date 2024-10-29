@@ -14,14 +14,10 @@ def check_usage():
                         #required=True,
                         # add more algorithms later
                         choices=POSSIBLE_ALGORITHMS,
-                        default="bubble"
+                        default="selection"
                         )
     parser.add_argument("--start_list", default=None, type=str, help="A series of ints seperated by ONLY commas")
     parser.add_argument("-d", "--delay", default=0, type=float, help="how many secounds you want the comuter to wait after every step")
     # args is a dict of the key-value pairs from the command-line
     args = vars(parser.parse_args())
-    
-    # format the start_list if given as a CLA.
-    if args["start_list"] != None:
-        args["start_list"] = tuple(args["start_list"].split())
     return args

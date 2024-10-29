@@ -1,7 +1,7 @@
 import pygame as pg
 
 from arg_manipulation import check_usage
-from List import List, WIDTH, HEIGHT
+from List import List
 
 def main():
     args = check_usage()

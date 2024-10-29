@@ -7,14 +7,14 @@ from Pillar import Pillar
 
 DEFAULT_RANDOM_SEED = datetime.datetime.now().timestamp()
 DEFAULT_LIST_LENGTH = 100
-POSSIBLE_ALGORITHMS = ["bogo", "bogo-sort", "bubble", "bubble_sort", ]
+POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge"]
 
 HEIGHT = 720
-WIDTH = 1280
+max_width = 1280
 
 MAX_PILLAR_HEIGHT = int(HEIGHT * 0.9)
 MARGIN = (HEIGHT - MAX_PILLAR_HEIGHT) / 2
-PILLAR_PADDING_REL = 0.01
+PILLAR_PADDING_REL = 0.02
 
 
 class List():
@@ -30,8 +30,16 @@ class List():
         - algorithm determins which algorithm is used to sort the list after calling the sort method in it. It has to be one of the options of POSSIBLE_ALGORITHMS
         """
         
+        # format the sorting algorythm into valid options
+        self.algorithm = algorithm.split("-")[0]
+        self.algorithm = self.algorithm.split("_")[0]
+        
         # check validity of kwargs
-        assert algorithm in POSSIBLE_ALGORITHMS
+        
+        # check if the algorithm is possible
+        assert self.algorithm in POSSIBLE_ALGORITHMS
+        
+        # check if the seed has the right datatype
         assert (type(seed) == int or type(seed) == float)
         
         self.algorithm = algorithm.replace("-sort", "")
@@ -63,11 +71,19 @@ class List():
                 
         self.length = len(self.pillars)
         
+        # the number of pixels a pillar is wide
+        # must be an integer which causes problems
         global PILLAR_SPACE
-        PILLAR_SPACE = int(WIDTH / self.length)
+        PILLAR_SPACE = int(max_width / self.length)
+        
+        # the ammount of pixels that are empty because of the rounding
+        global width
+        width = int((PILLAR_SPACE * self.length))
 
+        # initalise screen with a dynamic width, so the pillars fit perfectly.
+        # it wouldn't otherwise due to rounding impercision because pixels must be ints
         pg.init()
-        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pg.display.set_mode((width, HEIGHT))
         
         assert type(delay) == float or type(delay) == int
         assert delay >= 0
@@ -82,10 +98,14 @@ class List():
     def sort(self):
         if self.algorithm == "bogo":
             self.bogo_sort()
+        elif self.algorithm == "selection":
+            self.selection_sort()
         elif self.algorithm == "merge":
             self.merge_sort()
         elif self.algorithm == "bubble":
             self.bubble_sort()
+        else:
+            raise NotImplementedError
     
     def bogo_sort(self):
         pass
@@ -99,7 +119,7 @@ class List():
                 self.draw()
                 self.pillars[smallest_index].selected = True
                 self.pillars[j].comparing = True
-                if self.pillars[smallest_index] < self.pillars[j]:
+                if self.pillars[smallest_index].value < self.pillars[j].value:
                     self.pillars[smallest_index].selected = False
                     smallest_index = j
                     self.pillars[smallest_index].comparing = False
@@ -163,8 +183,10 @@ class List():
     def draw(self):
         self.screen.fill("black")
         for i in range(self.length):
+            
             pillar_height = int(MAX_PILLAR_HEIGHT * (self.pillars[i].value / self.length))
             pillar_width = int(PILLAR_SPACE - (PILLAR_SPACE * PILLAR_PADDING_REL))
+            
             y = int(HEIGHT - (pillar_height))
             x = int((PILLAR_SPACE * i) + (PILLAR_SPACE * (PILLAR_PADDING_REL / 2)))
             self.pillars[i].draw_pillar(self.screen, x, y, pillar_width, pillar_height)
