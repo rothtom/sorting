@@ -5,7 +5,7 @@ from List import List
 
 def main():
     args = check_usage()
-    list = List(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_list=args["start_list"], delay=args["delay"])
+    list = List(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_list"], delay=args["delay"])
     running = True
     sorting = True
     while running:

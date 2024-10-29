@@ -20,11 +20,11 @@ PILLAR_PADDING_REL = 0.02
 class List():
     # length ist hier optional, um besser mit bereits gegebenen Listen testen zu können.
     # wenn es eine liste zum starten gibt, ist die länge unnötig
-    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_list=None, delay=0):
+    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_tuple=None, delay=0):
         """
         Creates a list of Pillars, randomly arranged, except if there is a start list of values - then it uses those.
-        - start_list is an option for giving a prearranged list of values for the values of the pillars.
-        - length is a required parameter when not giving a start_list that determins the length of the randomly arranged.
+        - start_tuple is an option for giving a prearranged list of values for the values of the pillars.
+        - length is a required parameter when not giving a start_tuple that determins the length of the randomly arranged.
         - seed is an option for a random seed so everytime you run it you get a differently arranged list. the random seed is constructed by the current system time
         which ensures a different seed everytime you run it
         - algorithm determins which algorithm is used to sort the list after calling the sort method in it. It has to be one of the options of POSSIBLE_ALGORITHMS
@@ -45,10 +45,10 @@ class List():
         self.algorithm = algorithm.replace("-sort", "")
         
         # if you dont want a random list but rather a preconfigured one
-        if start_list != None:
-            assert type(start_list) == tuple
+        if start_tuple != None:
+            assert type(start_tuple) == tuple
             self.pillars = []
-            for value in start_list:
+            for value in start_tuple:
                 self.pillars.append(Pillar(value=value))
         else:
             # check for valid length is a valid integer grater than 0
@@ -100,16 +100,19 @@ class List():
             self.bogo_sort()
         elif self.algorithm == "selection":
             self.selection_sort()
-        elif self.algorithm == "merge":
-            self.merge_sort()
         elif self.algorithm == "bubble":
             self.bubble_sort()
+        elif self.algorithm == "merge":
+            self.merge_sort()
         else:
             raise NotImplementedError
     
     def bogo_sort(self):
-        pass
-    
+        while not self.check_sorted():
+            self.draw()
+            random.shuffle(self.pillars)
+        self.draw()
+        
     def selection_sort(self):
         self.draw()
         for i in range(self.length - 1):
@@ -138,9 +141,6 @@ class List():
             self.draw()
             self.pillars[smallest_index].swapping = False
             self.pillars[i].selected = False
-
-    def merge_sort(self):
-        pass
 
     def bubble_sort(self, context=None):
         """
@@ -173,8 +173,8 @@ class List():
                     self.pillars[j] = self.pillars[j + 1]
                     self.pillars[j + 1] = ptemp
                     
-                    
                     self.draw()
+                    
                     # algorithm goes on until he gets through wihout switching something or after i iterations
                     swapped = True
                     
@@ -189,6 +189,9 @@ class List():
             # if the algorithm didnt switch something its sorted. -> quits
             if swapped == False:
                 break
+            
+    def merge_sort(self):
+        pass
             
     def draw(self):
         self.screen.fill("black")
