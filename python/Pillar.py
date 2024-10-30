@@ -23,3 +23,6 @@ class Pillar():
             pg.draw.rect(screen, SELECTED_COLOR, rect)
         else:
             pg.draw.rect(screen, NORMAL_COLOR, rect)
+
+    def __str__(self):
+        return f"{self.value}"

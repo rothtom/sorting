@@ -103,7 +103,8 @@ class List():
         elif self.algorithm == "bubble":
             self.bubble_sort()
         elif self.algorithm == "merge":
-            self.merge_sort()
+            self.merge_sort(self.pillars)
+            self.draw()
         else:
             raise NotImplementedError
     
@@ -131,7 +132,7 @@ class List():
                 self.draw()
                 self.pillars[j].comparing = False
             
-            # TODO
+            
             # switch i-th and smallest_index pillar
             self.pillars[i].swapping = True
             self.draw()
@@ -141,6 +142,7 @@ class List():
             self.draw()
             self.pillars[smallest_index].swapping = False
             self.pillars[i].selected = False
+        
 
     def bubble_sort(self, context=None):
         """
@@ -190,8 +192,48 @@ class List():
             if swapped == False:
                 break
             
-    def merge_sort(self):
-        pass
+    def merge_sort(self, unsorted_list):
+        # base case in recursion if lsit is not splittable anymore
+        if len(unsorted_list) == 1:
+            return unsorted_list
+        
+        # // for integer division -> 2 // 5 = 2 and not 2.5
+        mid = len(unsorted_list) // 2
+        left = unsorted_list[:mid]
+        right = unsorted_list[mid:]
+        
+        
+        left = self.merge_sort(left)
+        right = self.merge_sort(right)
+        
+        
+        i = j = k = 0
+        
+        while i < len(left) and j < len(right):
+            if left[i].value < right[j].value:
+                unsorted_list[k] = left[i]
+                i += 1
+            else:
+                unsorted_list[k] = right[j]
+                j += 1
+            k += 1
+        
+        while i < len(left):
+            unsorted_list[k] = left[i]
+            i += 1
+            k += 1
+        
+        while j < len(right):
+            unsorted_list[k] = right[j]
+            j += 1
+            k += 1
+        
+        for pillar in unsorted_list:
+            print(pillar)
+        return unsorted_list
+        
+        
+
             
     def draw(self):
         self.screen.fill("black")
