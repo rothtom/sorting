@@ -210,28 +210,20 @@ class List():
         left = unsorted_list[:mid]
         right = unsorted_list[mid:]
         
-        
         left = self.merge_sort(left)
         right = self.merge_sort(right)
-        
         
         i = j = k = 0
         
         while i < len(left) and j < len(right):
-            self.draw()
             if left[i].value < right[j].value:
                 unsorted_list[k] = left[i]
                 i += 1
             else:
                 unsorted_list[k] = right[j]
-                index1 = self.find_pillar_index_by_value(left[i].value)
-                index2 = self.find_pillar_index_by_value(right[j].value)
-                ptemp = self.pillars[index1]
-                self.pillars[index1] = self.pillars[index2]
-                self.pillars[index2] = ptemp
+                
                 j += 1
             k += 1
-            self.draw()
         
         while i < len(left):        
             unsorted_list[k] = left[i]
@@ -244,7 +236,6 @@ class List():
             
             j += 1
             k += 1
-        
         return unsorted_list
         
         
