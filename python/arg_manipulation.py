@@ -14,7 +14,7 @@ def check_usage():
                         #required=True,
                         # add more algorithms later
                         choices=POSSIBLE_ALGORITHMS,
-                        default="selection"
+                        default="merge"
                         )
     parser.add_argument("--start_list", default=None, type=str, help="A series of ints seperated by ONLY commas")
     parser.add_argument("-d", "--delay", default=0, type=float, help="how many secounds you want the comuter to wait after every step")

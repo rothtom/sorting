@@ -6,11 +6,11 @@ import pygame as pg
 from Pillar import Pillar
 
 DEFAULT_RANDOM_SEED = datetime.datetime.now().timestamp()
-DEFAULT_LIST_LENGTH = 100
+DEFAULT_LIST_LENGTH = 4
 POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge"]
 
 HEIGHT = 720
-max_width = 1280
+MAX_WIDTH = 1280
 
 MAX_PILLAR_HEIGHT = int(HEIGHT * 0.9)
 MARGIN = (HEIGHT - MAX_PILLAR_HEIGHT) / 2
@@ -74,7 +74,7 @@ class List():
         # the number of pixels a pillar is wide
         # must be an integer which causes problems
         global PILLAR_SPACE
-        PILLAR_SPACE = int(max_width / self.length)
+        PILLAR_SPACE = int(MAX_WIDTH / self.length)
         
         # the ammount of pixels that are empty because of the rounding
         global width
@@ -91,6 +91,11 @@ class List():
         
     def check_sorted(self):
         for i in range(len(self.pillars) - 1):
+            self.pillars[i].selected = True
+            self.pillars[i + 1].comparing = True
+            self.draw()
+            self.pillars[i].selected = False
+            self.pillars[i + 1].comparing = False
             if self.pillars[i].value > self.pillars[i + 1].value:
                 return False
         return True
@@ -109,9 +114,12 @@ class List():
             raise NotImplementedError
     
     def bogo_sort(self):
-        while not self.check_sorted():
+        while True:
             self.draw()
             random.shuffle(self.pillars)
+            sorted = self.check_sorted()
+            if sorted:
+                break
         self.draw()
         
     def selection_sort(self):
@@ -210,31 +218,43 @@ class List():
         i = j = k = 0
         
         while i < len(left) and j < len(right):
+            self.draw()
             if left[i].value < right[j].value:
                 unsorted_list[k] = left[i]
                 i += 1
             else:
                 unsorted_list[k] = right[j]
+                index1 = self.find_pillar_index_by_value(left[i].value)
+                index2 = self.find_pillar_index_by_value(right[j].value)
+                ptemp = self.pillars[index1]
+                self.pillars[index1] = self.pillars[index2]
+                self.pillars[index2] = ptemp
                 j += 1
             k += 1
+            self.draw()
         
-        while i < len(left):
+        while i < len(left):        
             unsorted_list[k] = left[i]
+            
             i += 1
             k += 1
         
         while j < len(right):
             unsorted_list[k] = right[j]
+            
             j += 1
             k += 1
         
-        for pillar in unsorted_list:
-            print(pillar)
         return unsorted_list
         
         
-
-            
+    def find_pillar_index_by_value(self, value):
+        assert type(value) == int
+        for i in range(len(self.pillars)):
+            if self.pillars[i].value == value:
+                return i
+        raise ValueError
+        
     def draw(self):
         self.screen.fill("black")
         for i in range(self.length):
