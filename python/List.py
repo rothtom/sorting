@@ -200,52 +200,7 @@ class List():
                 break
             
     def merge_sort(self, unsorted_list):
-        # base case in recursion if lsit is not splittable anymore
-        if len(unsorted_list) == 1:
-            return unsorted_list
-        
-        # // for integer division -> 2 // 5 = 2 and not 2.5
-        mid = len(unsorted_list) // 2
-        left = unsorted_list[:mid]
-        right = unsorted_list[mid:]
-        
-        left_sorted = self.merge_sort(left)
-        right_sorted = self.merge_sort(right)
-        
-        i = j = k = 0
-        
-        sorted_list = [None] * len(unsorted_list)
-        while i < len(left_sorted) and j < len(right_sorted):
-            if left[i].value < right[j].value:
-                sorted_list[k] = left_sorted[i]
-                i += 1
-            else:
-                sorted_list[k] = right_sorted[j]
-                j += 1
-            
-            k += 1
-        
-        while i < len(left_sorted):        
-            sorted_list[k] = left_sorted[i]
-            
-            i += 1
-            k += 1
-        
-        while j < len(right_sorted):
-            sorted_list[k] = right_sorted[j]
-            
-            j += 1
-            k += 1
-        for pillar in sorted_list:
-            print(pillar, end=", ")
-        for i in range(len(unsorted_list)):
-            index_unsorted = self.find_pillar_index_by_value(unsorted_list[i].value)
-            index_sorted = self.find_pillar_index_by_value(sorted_list[i].value)
-            ptemp = self.pillars[index_unsorted]
-            self.pillars[index_unsorted] = self.pillars[index_sorted]
-            self.pillars[index_sorted] = ptemp
-            self.draw()
-        return sorted_list
+        pass
         
         
     def find_pillar_index_by_value(self, value):
