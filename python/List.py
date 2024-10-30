@@ -108,7 +108,7 @@ class List():
         elif self.algorithm == "bubble":
             self.bubble_sort()
         elif self.algorithm == "merge":
-            self.merge_sort(self.pillars)
+            self.merge_sort(0 , self.length - 1)
         else:
             raise NotImplementedError
     
@@ -199,8 +199,50 @@ class List():
             if swapped == False:
                 break
             
-    def merge_sort(self, unsorted_list):
-        pass
+    def merge_sort(self, left_index, right_index):
+        # the distance between the left and right index will grow smaller untill their both at the end, it will then return
+        if left_index < right_index:
+            middle = (left_index + right_index) // 2
+            
+            self.merge_sort(left_index, middle)
+            self.merge_sort(middle + 1, right_index)
+            self.merge(left_index, right_index , middle)
+            
+    
+    def merge(self, left_index, right_index, middle):
+        length_left = middle - left_index + 1
+        length_right = right_index - middle
+        
+        left_list = [None] * length_left
+        for i in range(length_left):
+            left_list[i] = self.pillars[left_index + i]
+        
+        right_list = [None] * length_right
+        for i in range(length_left):
+            right_list[i] = self.pillars[middle + 1 + i]
+        
+        i = j = 0
+        k = left_index
+        
+        while i < length_left and j < length_right:
+            if left_list[i].value < right_list[j].value:
+                self.pillars[k] = left_list[i]
+                i += 1
+            else:
+                self.pillars[k] = right_list[j]
+                j += 1
+            k += 1
+        
+        while i < length_left:
+            self.pillars[k] = left_list[i]
+            i += 1
+            k += 1
+        
+        while j < length_right:
+            self.pillars[k] = right_list[j]
+            j += 1
+            k += 1
+        self.draw()
         
         
     def find_pillar_index_by_value(self, value):
