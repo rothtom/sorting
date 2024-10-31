@@ -204,8 +204,12 @@ class List():
         if left_index < right_index:
             middle = (left_index + right_index) // 2
             
+            
             self.merge_sort(left_index, middle)
+            
+            
             self.merge_sort(middle + 1, right_index)
+            
             self.merge(left_index, right_index , middle)
             
     
@@ -218,46 +222,58 @@ class List():
             left_list[i] = self.pillars[left_index + i]
         
         right_list = [None] * length_right
-        for i in range(length_left):
+        for i in range(length_right):
             right_list[i] = self.pillars[middle + 1 + i]
             
         for i in range(left_index, right_index + 1):
             self.pillars[i].hidden = True
-        self.draw()
         i = j = 0
         k = left_index
-        
+        self.draw()
         while i < length_left and j < length_right:
             if left_list[i].value < right_list[j].value:
+                ptemp = self.pillars[k]
                 self.pillars[k] = left_list[i]
+                self.pillars[self.find_pillar_index_by_value(left_list[i].value)[-1]] = ptemp
                 i += 1
             else:
+                ptemp = self.pillars[k]
                 self.pillars[k] = right_list[j]
+                self.pillars[self.find_pillar_index_by_value(right_list[j].value)[-1]] = ptemp
                 j += 1
             self.pillars[k].hidden = False
             k += 1
-        self.draw()
+            self.draw()
+            
         while i < length_left:
+            ptemp = self.pillars[k]
             self.pillars[k] = left_list[i]
-            self.pillars[i].hidden = False
+            self.pillars[self.find_pillar_index_by_value(left_list[i].value)[-1]] = ptemp
+            self.pillars[k].hidden = False
             self.draw()
             i += 1
             k += 1
         
         while j < length_right:
+            ptemp = self.pillars[k]
             self.pillars[k] = right_list[j]
-            self.pillars[i].hidden = False
+            self.pillars[self.find_pillar_index_by_value(right_list[j].value)[-1]] = ptemp
+            self.pillars[k].hidden = False
             self.draw()
             j += 1
             k += 1
+            
         
         
         
     def find_pillar_index_by_value(self, value):
         assert type(value) == int
+        indexes = []
         for i in range(len(self.pillars)):
             if self.pillars[i].value == value:
-                return i
+                indexes.append(i)
+        if len(indexes) > 0:
+            return indexes
         raise ValueError
         
     def draw(self):
