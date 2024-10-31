@@ -12,10 +12,13 @@ class Pillar():
         self.comparing = False
         self.selected = False
         self.swapping = False
+        self.hidden = False
         
     def draw_pillar(self, screen, x, y, width, height):
         rect = pg.Rect(x, y, width, height)
-        if self.comparing:
+        if self.hidden:
+            return
+        elif self.comparing:
             pg.draw.rect(screen, COMPARING_COLOR, rect)
         elif self.swapping:
             pg.draw.rect(screen, SWAPPING_COLOR, rect)

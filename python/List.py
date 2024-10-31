@@ -220,7 +220,10 @@ class List():
         right_list = [None] * length_right
         for i in range(length_left):
             right_list[i] = self.pillars[middle + 1 + i]
-        
+            
+        for i in range(left_index, right_index + 1):
+            self.pillars[i].hidden = True
+        self.draw()
         i = j = 0
         k = left_index
         
@@ -231,18 +234,23 @@ class List():
             else:
                 self.pillars[k] = right_list[j]
                 j += 1
+            self.pillars[k].hidden = False
             k += 1
-        
+        self.draw()
         while i < length_left:
             self.pillars[k] = left_list[i]
+            self.pillars[i].hidden = False
+            self.draw()
             i += 1
             k += 1
         
         while j < length_right:
             self.pillars[k] = right_list[j]
+            self.pillars[i].hidden = False
+            self.draw()
             j += 1
             k += 1
-        self.draw()
+        
         
         
     def find_pillar_index_by_value(self, value):
