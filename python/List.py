@@ -200,20 +200,30 @@ class List():
                 break
             
     def merge_sort(self, left_index, right_index):
+        for i in range(left_index, right_index + 1):
+            self.pillars[i].selected = True
+        self.draw()
+        for i in range(left_index, right_index + 1):
+            self.pillars[i].selected = False
+                
         # the distance between the left and right index will grow smaller untill their both at the end, it will then return
         if left_index < right_index:
             middle = (left_index + right_index) // 2
-            
-            
             self.merge_sort(left_index, middle)
-            
             
             self.merge_sort(middle + 1, right_index)
             
             self.merge(left_index, right_index , middle)
-            
-    
+
     def merge(self, left_index, right_index, middle):
+        for i in range(left_index, right_index + 1):
+            self.pillars[i].swapping = True
+        self.draw()
+        for i in range(left_index, right_index + 1):
+            self.pillars[i].swapping = False
+            self.pillars[i].hidden = True
+        self.draw()
+        
         length_left = middle - left_index + 1
         length_right = right_index - middle
         
@@ -222,14 +232,12 @@ class List():
             left_list[i] = self.pillars[left_index + i]
         
         right_list = [None] * length_right
+        
         for i in range(length_right):
             right_list[i] = self.pillars[middle + 1 + i]
-            
-        for i in range(left_index, right_index + 1):
-            self.pillars[i].hidden = True
+
         i = j = 0
         k = left_index
-        self.draw()
         while i < length_left and j < length_right:
             if left_list[i].value < right_list[j].value:
                 ptemp = self.pillars[k]
@@ -263,6 +271,13 @@ class List():
             j += 1
             k += 1
             
+        # in this case the comparing visualisation indicates completion of sorting
+        for i in range(left_index, k):
+            self.pillars[i].comparing = True
+        self.draw()
+        for i in range(left_index, k):
+            self.pillars[i].comparing = False
+        self.draw()
         
         
         
