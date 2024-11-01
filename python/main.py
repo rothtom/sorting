@@ -16,7 +16,8 @@ def main():
         if keys[pg.K_ESCAPE]:
             pg.quit()
 
-        list.sort()
+        duration = list.sort()
+        print(duration)
         running = False
 
 if __name__ == "__main__":

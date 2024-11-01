@@ -101,6 +101,7 @@ class List():
         return True
     
     def sort(self):
+        start_time = datetime.datetime.now()
         if self.algorithm == "bogo":
             self.bogo_sort()
         elif self.algorithm == "selection":
@@ -113,7 +114,8 @@ class List():
             self.quick_sort(0, self.length - 1)
         else:
             raise NotImplementedError
-    
+        end_time = datetime.datetime.now()
+        return end_time - start_time
     def bogo_sort(self):
         while True:
             self.draw()
@@ -282,17 +284,36 @@ class List():
         pivot = self.pillars[right_index]
         pivot.selected = True
         i = left_index - 1
+        for j in range(left_index, right_index):
+            self.pillars[j].selected = True
+        self.draw()
+        for j in range(left_index, right_index):
+            self.pillars[j].selected = False
         
         for j in range(left_index, right_index):
-            
+            self.pillars[j].comparing = True
             self.draw()
             if self.pillars[j].value < pivot.value:
                 i += 1
-            
-                self.swap(i, j)
-
-        self.swap(i + 1, self.find_pillar_index_by_value(pivot.value)[-1])
+                # only swap if i and j are not the same, because it would then switch with itself
+                if i != j:
+                    self.pillars[i].swapping = True
+                    self.pillars[j].swapping = True
+                    self.draw()
+                    self.swap(i, j)
+                    self.draw()
+                    self.pillars[i].swapping = False
+                    self.pillars[j].swapping = False
+                self.pillars[i].comparing = False
+            else:
+                self.pillars[j].comparing = False
+        self.pillars[i + 1].swapping = True
+        pivot.swapping = True
         self.draw()
+        self.swap(i + 1, right_index)
+        self.draw()
+        self.pillars[right_index].swapping = False
+        pivot.swapping = False
         pivot.selected = False
         return i + 1
     
