@@ -240,32 +240,24 @@ class List():
         k = left_index
         while i < length_left and j < length_right:
             if left_list[i].value < right_list[j].value:
-                ptemp = self.pillars[k]
-                self.pillars[k] = left_list[i]
-                self.pillars[self.find_pillar_index_by_value(left_list[i].value)[-1]] = ptemp
+                self.swap(k, self.find_pillar_index_by_value(left_list[i].value)[-1])
                 i += 1
             else:
-                ptemp = self.pillars[k]
-                self.pillars[k] = right_list[j]
-                self.pillars[self.find_pillar_index_by_value(right_list[j].value)[-1]] = ptemp
+                self.swap(k, self.find_pillar_index_by_value(right_list[j].value)[-1])
                 j += 1
             self.pillars[k].hidden = False
             k += 1
             self.draw()
             
         while i < length_left:
-            ptemp = self.pillars[k]
-            self.pillars[k] = left_list[i]
-            self.pillars[self.find_pillar_index_by_value(left_list[i].value)[-1]] = ptemp
+            self.swap(k, self.find_pillar_index_by_value(left_list[i].value)[-1])
             self.pillars[k].hidden = False
             self.draw()
             i += 1
             k += 1
         
         while j < length_right:
-            ptemp = self.pillars[k]
-            self.pillars[k] = right_list[j]
-            self.pillars[self.find_pillar_index_by_value(right_list[j].value)[-1]] = ptemp
+            self.swap(k, self.find_pillar_index_by_value(right_list[j].value)[-1])
             self.pillars[k].hidden = False
             self.draw()
             j += 1
@@ -281,7 +273,10 @@ class List():
         
         
         
-    def find_pillar_index_by_value(self, value):
+    def find_pillar_index_by_value(self, value) -> list:
+        """
+        returns a list of indexes where the pillar has the targeted value
+        """
         assert type(value) == int
         indexes = []
         for i in range(len(self.pillars)):
@@ -290,6 +285,14 @@ class List():
         if len(indexes) > 0:
             return indexes
         raise ValueError
+    
+    def swap(self, index1, index2) -> None:
+        """
+        swaps the pillars of self.list in the index1-st and indext2-th place
+        """
+        temp = self.pillars[index1]
+        self.pillars[index1] = self.pillars[index2]
+        self.pillars[index2] = temp
         
     def draw(self):
         self.screen.fill("black")
