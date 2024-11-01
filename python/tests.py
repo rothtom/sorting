@@ -51,3 +51,8 @@ def test_merge_sort():
     list = m.List(algorithm="merge", start_tuple=SEMI_RANDOM_TUPLE)
     list.sort()
     assert list.check_sorted() == True
+    
+def test_quick_sort():
+    list = m.List(algorithm="quick", start_tuple=SEMI_RANDOM_TUPLE)
+    list.sort()
+    assert list.check_sorted() == True

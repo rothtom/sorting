@@ -7,7 +7,7 @@ from Pillar import Pillar
 
 DEFAULT_RANDOM_SEED = datetime.datetime.now().timestamp()
 DEFAULT_LIST_LENGTH = 4
-POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge"]
+POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge", "quick"]
 
 HEIGHT = 720
 MAX_WIDTH = 1280
@@ -110,7 +110,7 @@ class List():
         elif self.algorithm == "merge":
             self.merge_sort(0 , self.length - 1)
         elif self.algorithm == "quick":
-            self.quick_sort()
+            self.quick_sort(0, self.length - 1)
         else:
             raise NotImplementedError
     
@@ -269,10 +269,34 @@ class List():
             self.pillars[i].comparing = False
         self.draw()
     
-    def quick_sort():
-        pass
+    def quick_sort(self, left_index, right_index):
+        # base case for recursion
+        if left_index < right_index:
+            pivot = self.partition(left_index, right_index)
+            
+            self.quick_sort(left_index, pivot - 1)
+
+            self.quick_sort(pivot + 1, right_index)
+            
+    def partition(self, left_index, right_index):
+        pivot = self.pillars[right_index]
+        pivot.selected = True
+        i = left_index - 1
         
-        
+        for j in range(left_index, right_index):
+            
+            self.draw()
+            if self.pillars[j].value < pivot.value:
+                i += 1
+            
+                self.swap(i, j)
+
+        self.swap(i + 1, self.find_pillar_index_by_value(pivot.value)[-1])
+        self.draw()
+        pivot.selected = False
+        return i + 1
+    
+    
     def find_pillar_index_by_value(self, value) -> list:
         """
         returns a list of indexes where the pillar has the targeted value
