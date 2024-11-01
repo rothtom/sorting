@@ -1,7 +1,7 @@
 import pytest
 import main as m
 
-SORTED_LIST = [1, 2, 3, 4, 5]
+SORTED_TUPLE = tuple([1, 2, 3, 4, 5])
 SEMI_RANDOM_TUPLE = tuple([2, 4, 3, 5, 1])
     
 def test_list_creation():
@@ -26,7 +26,7 @@ def test_list_creation():
 
 def test_check_sorted():
     # test ckheck sorted function
-    list = m.List(algorithm="bogo", start_tuple=tuple(SORTED_LIST))
+    list = m.List(algorithm="bogo", start_tuple=tuple(SORTED_TUPLE))
     assert list.check_sorted() == True
     
     list = m.List(algorithm="bogo", start_tuple=SEMI_RANDOM_TUPLE)
@@ -44,5 +44,10 @@ def test_bogo_sort():
     
 def test_selection_sort():
     list = m.List(algorithm="selection", start_tuple=SEMI_RANDOM_TUPLE)
+    list.sort()
+    assert list.check_sorted() == True
+    
+def test_merge_sort():
+    list = m.List(algorithm="merge", start_tuple=SEMI_RANDOM_TUPLE)
     list.sort()
     assert list.check_sorted() == True
