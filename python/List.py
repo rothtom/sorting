@@ -109,6 +109,8 @@ class List():
             self.bubble_sort()
         elif self.algorithm == "merge":
             self.merge_sort(0 , self.length - 1)
+        elif self.algorithm == "quick":
+            self.quick_sort()
         else:
             raise NotImplementedError
     
@@ -140,12 +142,10 @@ class List():
                 self.pillars[j].comparing = False
             
             
-            # switch i-th and smallest_index pillar
+            # switch i-th and smallest_index pillar and  visualise it
             self.pillars[i].swapping = True
             self.draw()
-            temp = self.pillars[i]
-            self.pillars[i] = self.pillars[smallest_index]
-            self.pillars[smallest_index] = temp
+            self.swap(i, smallest_index)
             self.draw()
             self.pillars[smallest_index].swapping = False
             self.pillars[i].selected = False
@@ -178,9 +178,7 @@ class List():
                     self.draw()
                     
                     # switches the two compared elements
-                    ptemp = self.pillars[j]
-                    self.pillars[j] = self.pillars[j + 1]
-                    self.pillars[j + 1] = ptemp
+                    self.swap(j, j + 1)
                     
                     self.draw()
                     
@@ -270,7 +268,9 @@ class List():
         for i in range(left_index, k):
             self.pillars[i].comparing = False
         self.draw()
-        
+    
+    def quick_sort():
+        pass
         
         
     def find_pillar_index_by_value(self, value) -> list:
