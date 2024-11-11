@@ -27,17 +27,11 @@ class List():
         - length is a required parameter when not giving a start_tuple that determins the length of the randomly arranged.
         - seed is an option for a random seed so everytime you run it you get a differently arranged list. the random seed is constructed by the current system time
         which ensures a different seed everytime you run it
-        - algorithm determins which algorithm is used to sort the list after calling the sort method in it. It has to be one of the options of POSSIBLE_ALGORITHMS
+        - algorithm keeps track of which algorythm is used
         """
         
-        # format the sorting algorythm into valid options
-        self.algorithm = algorithm.split("-")[0]
-        self.algorithm = self.algorithm.split("_")[0]
         
-        # check validity of kwargs
-        
-        # check if the algorithm is possible
-        assert self.algorithm in POSSIBLE_ALGORITHMS
+        # kwargs validitys are checked before tring to instantiate the object
         
         # check if the seed has the right datatype
         assert (type(seed) == int or type(seed) == float)
@@ -71,7 +65,7 @@ class List():
         self.length = len(self.pillars)
         
         # the number of pixels a pillar is wide
-        # must be an integer which causes problems
+        # must be an integer!
         global PILLAR_SPACE
         PILLAR_SPACE = int(MAX_WIDTH / self.length)
         
@@ -87,6 +81,10 @@ class List():
         assert type(delay) == float or type(delay) == int
         assert delay >= 0
         self.delay = delay
+
+        self.algorithm = algorithm
+        
+        self.time_elapsed = None
         
     def check_sorted(self):
         for i in range(len(self.pillars) - 1):
@@ -98,24 +96,6 @@ class List():
             if self.pillars[i].value > self.pillars[i + 1].value:
                 return False
         return True
-    
-    def sort(self):
-        start_time = datetime.datetime.now()
-        if self.algorithm == "bogo":
-            self.bogo_sort()
-        elif self.algorithm == "selection":
-            self.selection_sort()
-        elif self.algorithm == "bubble":
-            self.bubble_sort()
-        elif self.algorithm == "merge":
-            self.merge_sort(0 , self.length - 1)
-        elif self.algorithm == "quick":
-            self.quick_sort(0, self.length - 1)
-        else:
-            raise NotImplementedError
-        end_time = datetime.datetime.now()
-        return end_time - start_time
-
 
     def find_pillar_index_by_value(self, value) -> list:
         """

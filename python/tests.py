@@ -19,8 +19,6 @@ def test_list_creation():
     #test list algorythm type
     list = List(length=1, seed=1, algorithm="bogo")
     assert list.algorithm == "bogo"
-    list = List(length=1, seed=1, algorithm="bogo-sort")
-    assert list.algorithm == "bogo"
     
     # test list creation with fixed list:
     list = List(length=len(SEMI_RANDOM_TUPLE), algorithm="bogo", start_tuple=SEMI_RANDOM_TUPLE)

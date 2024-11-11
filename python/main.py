@@ -23,7 +23,8 @@ def main():
         duration = list.sort()
         print(duration)
         running = False
-        
+
+
 def initialize_list(args):
     if args["algorithm"] == "bogo":
         return BogoSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_list"], delay=args["delay"])
