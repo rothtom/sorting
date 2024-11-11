@@ -1,8 +1,15 @@
 from List import List
 import random
+import datetime
 
 class BogoSortList(List):
     def sort(self):
+        self.start_time = datetime.datetime.now()
+        self.bogo_sort()
+        self.end_time = datetime.datetime.now()
+        self.time_elapsed = self.end_time - self.start_time
+        return self.time_elapsed
+    def bogo_sort(self):
         while True:
             self.draw()
             random.shuffle(self.pillars)

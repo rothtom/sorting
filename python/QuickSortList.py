@@ -1,6 +1,14 @@
 from List import List
+import datetime
 
 class QuickSortList(List):
+    def sort(self):
+        self.start_time = datetime.datetime.now()
+        self.quick_sort(0, self.length - 1)
+        self.end_time = datetime.datetime.now()
+        self.time_elapsed = self.end_time - self.start_time
+        return self.time_elapsed
+    
     def quick_sort(self, left_index, right_index):
         # base case for recursion
         if left_index < right_index:

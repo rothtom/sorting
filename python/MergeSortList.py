@@ -1,7 +1,15 @@
 from List import List
+import datetime
 
 class MergeSortList(List):
-    def sort(self, left_index, right_index):
+    def sort(self):
+        self.start_time = datetime.datetime.now()
+        self.merge_sort(0, self.length - 1)
+        self.end_time = datetime.datetime.now()
+        self.time_elapsed = self.end_time - self.start_time
+        return self.time_elapsed
+    
+    def merge_sort(self, left_index, right_index):
         for i in range(left_index, right_index + 1):
             self.pillars[i].selected = True
         self.draw()

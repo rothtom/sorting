@@ -1,7 +1,15 @@
 from List import List
+import datetime
 
 class BubbleSortList(List):
     def sort(self):
+        self.start_time = datetime.datetime.now()
+        self.bubble_sort()
+        self.end_time = datetime.datetime.now()
+        self.time_elapsed = self.end_time - self.start_time
+        return self.time_elapsed
+    
+    def bubble_sort(self):
         """
         Bubblesorts the list of Pillars in List.pillars
         Bubblesort compares a item to its right one and switches them if neccessarry. The next item becomes the one that compares its right neighbour to itself and so on...
