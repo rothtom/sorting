@@ -2,6 +2,7 @@ import os
 # hides the hello message which is a side product of the screen init function of pygame
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame as pg
+import sys
 
 from arg_manipulation import check_usage
 from BogoSortList import BogoSortList
@@ -10,30 +11,38 @@ from MergeSortList import MergeSortList
 from QuickSortList import QuickSortList
 from SelectionSortList import SelectionSortList
 
-
+FPS = 60
 
 
 def main():
     pg.init()
+    
+    clock = pg.time.Clock()
     args = check_usage()
     list = initialize_list(args)
+    
+    font = pg.font.SysFont("calibri", 48)
+    img = font.render(list.algorithm.upper() + "-SORT", True, "green")
+    
+    
     running = True
     while running:
-        keys = pg.key.get_pressed()
-        if keys[pg.K_ESCAPE]:
-            pg.quit()
-        
+        clock.tick(FPS)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
-                
-        while not list.check_sorted(visualize=False):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_ESCAPE]:
+            sys.exit()
+
+        if not list.check_sorted(visualize=False):
             list.sort()
             print(f"Time overall:   {list.time_elapsed} seconds")
             print(f"Time waited:    {list.time_waited:.6f} seconds")
             print(f"Time sorted:    {(list.time_elapsed - list.time_waited):.6f} seconds")
             list.reset_highlights()
         list.draw()
+        list.screen.blit(img, (0, 0))
         pg.display.flip()
         
         
