@@ -6,7 +6,7 @@ class SelectionSortList(List):
         self.start_time = datetime.datetime.now()
         self.selection_sort()
         self.end_time = datetime.datetime.now()
-        self.time_elapsed = (self.end_time - self.start_time).total_seconds()
+        self.calculate_time()
         return self.time_elapsed
     
     def selection_sort(self):

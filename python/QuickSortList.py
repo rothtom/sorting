@@ -6,7 +6,7 @@ class QuickSortList(List):
         self.start_time = datetime.datetime.now()
         self.quick_sort(0, self.length - 1)
         self.end_time = datetime.datetime.now()
-        self.time_elapsed = (self.end_time - self.start_time).total_seconds()
+        self.calculate_time()
         return self.time_elapsed
     
     def quick_sort(self, left_index, right_index):

@@ -1,13 +1,14 @@
 import datetime
 import time
 import random
+import os
 
 import pygame as pg
 
 from Pillar import Pillar
 
 DEFAULT_RANDOM_SEED = datetime.datetime.now().timestamp()
-DEFAULT_LIST_LENGTH = 4
+DEFAULT_LIST_LENGTH = 100
 POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge", "quick"]
 
 HEIGHT = 720
@@ -17,6 +18,9 @@ MAX_PILLAR_HEIGHT = int(HEIGHT * 0.9)
 MARGIN = (HEIGHT - MAX_PILLAR_HEIGHT) / 2
 PILLAR_PADDING_REL = 0.02
 
+pg.font.init()
+font1 = pg.font.Font(open("fonts/BlackOpsOne-Regular.ttf", "r"), 48)
+font2 = pg.font.Font(open("fonts/Audiowide-Regular.ttf"), 32)
 
 class List():
     # length ist hier optional, um besser mit bereits gegebenen Listen testen zu können.
@@ -71,13 +75,13 @@ class List():
         PILLAR_SPACE = int(MAX_WIDTH / self.length)
         
         # the ammount of pixels that are empty because of the rounding
-        global width
-        width = int((PILLAR_SPACE * self.length))
+        global WIDTH
+        WIDTH = int((PILLAR_SPACE * self.length))
 
         # initalise screen with a dynamic width, so the pillars fit perfectly.
         # it wouldn't otherwise due to rounding impercision because pixels must be ints
-        pg.init()
-        self.screen = pg.display.set_mode((width, HEIGHT))
+        
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         
         assert type(delay) == float or type(delay) == int
         assert delay >= 0
@@ -85,8 +89,15 @@ class List():
 
         self.algorithm = algorithm
         
-        self.time_elapsed = 0
-        self.time_waited = 0
+        self.time_elapsed = datetime.timedelta(0,0)
+        self.time_waited = datetime.timedelta(0,0)
+        self.time_sorted = datetime.timedelta(0,0)
+        
+        
+        self.img1 = font1.render(self.algorithm.upper() + "-SORT", True, "green")
+        self.img1_x = (WIDTH // 2) - (self.img1.get_width() // 2)
+        
+        
         
     def check_sorted(self, visualize=True):
         for i in range(len(self.pillars) - 1):
@@ -131,18 +142,30 @@ class List():
             y = int(HEIGHT - (pillar_height))
             x = int((PILLAR_SPACE * i) + (PILLAR_SPACE * (PILLAR_PADDING_REL / 2)))
             self.pillars[i].draw_pillar(self.screen, x, y, pillar_width, pillar_height)
+            
+        self.screen.blit(self.img1, (self.img1_x, 0))
+        
+        # dispaly time after finishing
+        if self.time_sorted:
+            self.img2 = font2.render(f"Time spent sorting: {self.time_sorted.total_seconds():.6f}", True, "green")
+            self.img2_x = (WIDTH // 2) - (self.img2.get_width() // 2)
+            self.screen.blit(self.img2, (self.img2_x, 60))
         pg.display.flip()
         time.sleep(self.delay)
-        self.time_waited += self.delay
+        self.time_waited += datetime.timedelta(0, self.delay)
+        
+    def calculate_time(self) -> None:
+        self.time_elapsed = self.end_time - self.start_time
+        self.time_sorted = self.time_elapsed - self.time_waited
 
-    def reset_highlights(self):
+    def reset_highlights(self) -> None:
         for pillar in self.pillars:
             pillar.comparing = False
             pillar.selected = False
             pillar.swapping = False
             pillar.hidden = False
 
-    def __str__(self):
+    def __str__(self) -> str:
         string = f"len: {len(self.pillars)}\nsorted: {self.check_sorted()}\n"
         for i in range(len(self.pillars)):
             string = string + str(self.pillars[i].value) + " "
