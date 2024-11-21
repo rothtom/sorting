@@ -1,3 +1,6 @@
+import os
+# hides the hello message which is a side product of the screen init function of pygame
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame as pg
 
 from arg_manipulation import check_usage
