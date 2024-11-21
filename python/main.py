@@ -20,8 +20,10 @@ FPS = 60
 def main():
     pg.init()
     
+    
     clock = pg.time.Clock()
     args = check_usage()
+    pg.display.set_caption(f"Sorting ({args['algorithm'] + '-sort'})")
     list = initialize_list(args)
     
     
@@ -39,9 +41,9 @@ def main():
 
         if not list.check_sorted(visualize=False):
             list.sort()
-            print(f"Time overall:   {list.time_elapsed} seconds")
-            print(f"Time waited:    {list.time_waited} seconds")
-            print(f"Time sorted:    {list.time_sorted} seconds")
+            print(f"Time overall:   {list.time_elapsed.total_seconds():.6f} seconds")
+            print(f"Time waited:    {list.time_waited.total_seconds():.6f} seconds")
+            print(f"Time sorted:    {list.time_sorted.total_seconds():.6f} seconds")
             
             
             list.reset_highlights()
