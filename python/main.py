@@ -26,17 +26,19 @@ def main():
 
 
 def initialize_list(args):
-    if args["algorithm"] == "bogo":
-        return BogoSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_list"], delay=args["delay"])
-    if args["algorithm"] == "bubble":
-        return BubbleSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_list"], delay=args["delay"])
-    if args["algorithm"] == "merge":
-        return MergeSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_list"], delay=args["delay"])
-    if args["algorithm"] == "quick":
-        return QuickSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_list"], delay=args["delay"])
-    if args["algorithm"] == "selection":
-        return SelectionSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_list"], delay=args["delay"])
-    raise ValueError
+    match args["algorithm"]:
+        case "bogo":
+            return BogoSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
+        case "bubble":
+            return BubbleSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
+        case "merge":
+            return MergeSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
+        case "quick":
+            return QuickSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
+        case "selection":
+            return SelectionSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
+        case _:
+            raise ValueError
 
 if __name__ == "__main__":
     main()
