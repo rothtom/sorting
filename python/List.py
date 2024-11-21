@@ -14,7 +14,7 @@ POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge", "quick"]
 HEIGHT = 720
 MAX_WIDTH = 1280
 
-MAX_PILLAR_HEIGHT = int(HEIGHT * 0.9)
+MAX_PILLAR_HEIGHT = int(HEIGHT - 60 - 32 - 15)
 MARGIN = (HEIGHT - MAX_PILLAR_HEIGHT) / 2
 PILLAR_PADDING_REL = 0.02
 
@@ -150,6 +150,7 @@ class List():
             self.img2 = font2.render(f"Time spent sorting: {self.time_sorted.total_seconds():.6f} seconds", True, "green")
             self.img2_x = (WIDTH // 2) - (self.img2.get_width() // 2)
             self.screen.blit(self.img2, (self.img2_x, 60))
+            
         pg.display.flip()
         time.sleep(self.delay)
         self.time_waited += datetime.timedelta(0, self.delay)
