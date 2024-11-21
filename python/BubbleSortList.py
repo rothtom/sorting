@@ -6,7 +6,7 @@ class BubbleSortList(List):
         self.start_time = datetime.datetime.now()
         self.bubble_sort()
         self.end_time = datetime.datetime.now()
-        self.time_elapsed = self.end_time - self.start_time
+        self.time_elapsed = (self.end_time - self.start_time).total_seconds()
         return self.time_elapsed
     
     def bubble_sort(self):

@@ -1,11 +1,12 @@
 from List import List
 import datetime
+
 class SelectionSortList(List):
     def sort(self):
         self.start_time = datetime.datetime.now()
         self.selection_sort()
         self.end_time = datetime.datetime.now()
-        self.time_elapsed = self.end_time - self.start_time
+        self.time_elapsed = (self.end_time - self.start_time).total_seconds()
         return self.time_elapsed
     
     def selection_sort(self):

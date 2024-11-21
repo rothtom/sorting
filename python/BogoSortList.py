@@ -7,7 +7,7 @@ class BogoSortList(List):
         self.start_time = datetime.datetime.now()
         self.bogo_sort()
         self.end_time = datetime.datetime.now()
-        self.time_elapsed = self.end_time - self.start_time
+        self.time_elapsed = (self.end_time - self.start_time).total_seconds()
         return self.time_elapsed
     def bogo_sort(self):
         while True:

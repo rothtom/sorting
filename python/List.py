@@ -85,15 +85,17 @@ class List():
 
         self.algorithm = algorithm
         
-        self.time_elapsed = None
+        self.time_elapsed = 0
+        self.time_waited = 0
         
-    def check_sorted(self):
+    def check_sorted(self, visualize=True):
         for i in range(len(self.pillars) - 1):
-            self.pillars[i].selected = True
-            self.pillars[i + 1].comparing = True
-            self.draw()
-            self.pillars[i].selected = False
-            self.pillars[i + 1].comparing = False
+            if visualize:
+                self.pillars[i].selected = True
+                self.pillars[i + 1].comparing = True
+                self.draw()
+                self.pillars[i].selected = False
+                self.pillars[i + 1].comparing = False
             if self.pillars[i].value > self.pillars[i + 1].value:
                 return False
         return True
@@ -131,7 +133,15 @@ class List():
             self.pillars[i].draw_pillar(self.screen, x, y, pillar_width, pillar_height)
         pg.display.flip()
         time.sleep(self.delay)
-            
+        self.time_waited += self.delay
+
+    def reset_highlights(self):
+        for pillar in self.pillars:
+            pillar.comparing = False
+            pillar.selected = False
+            pillar.swapping = False
+            pillar.hidden = False
+
     def __str__(self):
         string = f"len: {len(self.pillars)}\nsorted: {self.check_sorted()}\n"
         for i in range(len(self.pillars)):

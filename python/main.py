@@ -10,22 +10,35 @@ from MergeSortList import MergeSortList
 from QuickSortList import QuickSortList
 from SelectionSortList import SelectionSortList
 
+
+
+
 def main():
+    pg.init()
     args = check_usage()
     list = initialize_list(args)
-    list.sort()
     running = True
     while running:
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                running = False
         keys = pg.key.get_pressed()
         if keys[pg.K_ESCAPE]:
             pg.quit()
+        
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running = False
+                
+        while not list.check_sorted(visualize=False):
+            list.sort()
+            print(f"Time overall:   {list.time_elapsed} seconds")
+            print(f"Time waited:    {list.time_waited:.6f} seconds")
+            print(f"Time sorted:    {(list.time_elapsed - list.time_waited):.6f} seconds")
+            list.reset_highlights()
+        list.draw()
+        pg.display.flip()
+        
+        
 
-        duration = list.sort()
-        print(duration)
-        running = False
+
 
 
 def initialize_list(args):
