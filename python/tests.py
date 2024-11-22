@@ -36,6 +36,13 @@ def test_check_sorted():
     list = List(algorithm="bogo", start_tuple=SEMI_RANDOM_TUPLE)
     assert list.check_sorted() == False
     
+    # test check sort function wihtout visualisation
+    list = List(algorithm="bogo", start_tuple=tuple(SORTED_TUPLE))
+    assert list.check_sorted(visualize=False) == True
+    
+    list = List(algorithm="bogo", start_tuple=SEMI_RANDOM_TUPLE)
+    assert list.check_sorted(visualize=False) == False
+    
 def test_bubble_sort():
     list = BubbleSortList(algorithm="bubble", start_tuple=SEMI_RANDOM_TUPLE)
     list.sort()
