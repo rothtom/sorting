@@ -1,7 +1,7 @@
 import datetime
 import time
 import random
-import os
+import sys
 
 import pygame as pg
 
@@ -90,12 +90,15 @@ class List():
         self.algorithm = algorithm
         
         self.time_elapsed = datetime.timedelta(0,0)
-        self.time_waited = datetime.timedelta(0,0)
+        self.time_drawing = datetime.timedelta(0,0)
         self.time_sorted = datetime.timedelta(0,0)
+        self.time_paused = datetime.timedelta(0,0)
         
         
         self.img1 = font1.render(self.algorithm.upper() + "-SORT", True, "green")
         self.img1_x = (WIDTH // 2) - (self.img1.get_width() // 2)
+        
+        self.stop = False
         
         
         
@@ -133,6 +136,7 @@ class List():
         self.pillars[index2] = temp
         
     def draw(self):
+        draw_start = datetime.datetime.now()
         self.screen.fill("black")
         for i in range(self.length):
             
@@ -152,12 +156,41 @@ class List():
             self.screen.blit(self.img2, (self.img2_x, 60))
             
         pg.display.flip()
-        time.sleep(self.delay)
-        self.time_waited += datetime.timedelta(0, self.delay)
+        before_wait = datetime.datetime.now()
+        waited_this_iteration = datetime.timedelta(0,0)
+        while True:
+            pg.event.pump()
+            check_end()
+            if pg.key.get_pressed()[pg.K_SPACE] or self.stop:
+                waited_this_iteration += self.pause()
+                if self.stop:
+                    break
+            if ((datetime.datetime.now() - before_wait) - waited_this_iteration).total_seconds() > self.delay:
+                break
+        draw_end = datetime.datetime.now()
+        draw_time = (draw_end - draw_start) - waited_this_iteration
+        self.time_drawing += datetime.timedelta(0, draw_time.total_seconds())
+
+    def pause(self):
+        start_time = datetime.datetime.now()
+        while True:
+            pg.event.pump()
+            check_end()
+            if (datetime.datetime.now() - start_time).total_seconds() > 0.1:
+                if pg.key.get_pressed()[pg.K_SPACE]:
+                    self.stop = False
+                    break
+                if pg.key.get_pressed()[pg.K_RIGHT]:
+                    self.stop = True
+                    break
+        time.sleep(0.1)
+        paused = datetime.timedelta(0, (datetime.datetime.now() - start_time).total_seconds())
+        self.time_paused += paused
+        return paused
         
     def calculate_time(self) -> None:
         self.time_elapsed = self.end_time - self.start_time
-        self.time_sorted = self.time_elapsed - self.time_waited
+        self.time_sorted = self.time_elapsed - self.time_drawing - self.time_paused
 
     def reset_highlights(self) -> None:
         for pillar in self.pillars:
@@ -172,3 +205,7 @@ class List():
             string = string + str(self.pillars[i].value) + " "
         string = string + "\n"
         return string
+
+def check_end():
+    if pg.key.get_pressed()[pg.K_ESCAPE]:
+        sys.exit()

@@ -15,7 +15,7 @@ from SelectionSortList import SelectionSortList
 
 FPS = 60
 
-
+stop = False
 
 def main():
     pg.init()
@@ -42,7 +42,8 @@ def main():
         if not list.check_sorted(visualize=False):
             list.sort()
             print(f"Time overall:   {list.time_elapsed.total_seconds():.6f} seconds")
-            print(f"Time waited:    {list.time_waited.total_seconds():.6f} seconds")
+            print(f"Time drawing:   {list.time_drawing.total_seconds():.6f} seconds")
+            print(f"Time paused:    {list.time_paused.total_seconds():.6f} seconds")
             print(f"Time sorted:    {list.time_sorted.total_seconds():.6f} seconds")
             
             
@@ -67,6 +68,17 @@ def initialize_list(args):
             return SelectionSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
         case _:
             raise ValueError
+
+
+def on_key_down(key):
+    print(key)
+    if key == pg.K_SPACE:
+        global stop
+        if stop:
+            stop = False
+        else:
+            stop = True
+
 
 if __name__ == "__main__":
     main()
