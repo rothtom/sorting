@@ -12,7 +12,7 @@ DEFAULT_LIST_LENGTH = 100
 POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge", "quick"]
 
 HEIGHT = 720
-MAX_WIDTH = 1280
+MAX_WIDTH = 500
 
 MAX_PILLAR_HEIGHT = int(HEIGHT - 60 - 32 - 15)
 MARGIN = (HEIGHT - MAX_PILLAR_HEIGHT) / 2
@@ -89,6 +89,8 @@ class List():
 
         self.algorithm = algorithm
         
+        self.swaps = 0
+        
         self.time_elapsed = datetime.timedelta(0,0)
         self.time_drawing = datetime.timedelta(0,0)
         self.time_sorted = datetime.timedelta(0,0)
@@ -98,8 +100,7 @@ class List():
         self.img1 = font1.render(self.algorithm.upper() + "-SORT", True, "green")
         self.img1_x = (WIDTH // 2) - (self.img1.get_width() // 2)
         
-        self.stop = False
-        
+        self.stop = True
         
         
     def check_sorted(self, visualize=True):
@@ -134,6 +135,7 @@ class List():
         temp = self.pillars[index1]
         self.pillars[index1] = self.pillars[index2]
         self.pillars[index2] = temp
+        self.swaps += 1
         
     def draw(self):
         draw_start = datetime.datetime.now()
