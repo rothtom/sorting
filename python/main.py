@@ -40,7 +40,7 @@ def main():
             sys.exit()
 
         if not list.check_sorted(visualize=False):
-            list.draw()
+            list.draw(time=False)
             list.sort()
             print(f"Time overall:   {list.time_elapsed.total_seconds():.6f} seconds")
             print(f"Time drawing:   {list.time_drawing.total_seconds():.6f} seconds")
@@ -49,7 +49,7 @@ def main():
             print(f"Swapped a total of {list.swaps} times.")
             
             list.reset_highlights()
-            list.draw()
+            list.draw(time=False)
 
 
 

@@ -138,7 +138,7 @@ class List():
         self.pillars[index2] = temp
         self.swaps += 1
         
-    def draw(self):
+    def draw(self, time=True):
         draw_start = datetime.datetime.now()
         self.screen.fill("black")
         for i in range(self.length):
@@ -172,7 +172,8 @@ class List():
                 break
         draw_end = datetime.datetime.now()
         draw_time = (draw_end - draw_start) - waited_this_iteration
-        self.time_drawing += datetime.timedelta(0, draw_time.total_seconds())
+        if time:
+            self.time_drawing += datetime.timedelta(0, draw_time.total_seconds())
 
     def pause(self):
         start_time = datetime.datetime.now()
