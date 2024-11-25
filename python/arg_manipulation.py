@@ -9,7 +9,7 @@ def check_usage():
         usage="python main.py --list_length {int} (default=100) --seed {float} (default=current timestamp) --start_tuple a series of ints seperated by ONLY a comma --delay how many seconds you want to wait after each draw call",
     )
     parser.add_argument("-l", "--length", default=DEFAULT_LIST_LENGTH, type=max_length_check)
-    parser.add_argument("-s", "--seed", default=DEFAULT_RANDOM_SEED, type=float)
+    parser.add_argument("--seed", default=DEFAULT_RANDOM_SEED, type=float)
     # for now not required and defaults to bogo
     parser.add_argument("-a", "--algorithm", help=f"determins which algorythm to use, choices are: {POSSIBLE_ALGORITHMS}, you can leave out the '-sort'.",
                         #required=True,
@@ -19,6 +19,7 @@ def check_usage():
                         )
     parser.add_argument("--start_tuple", default=None, type=str, help="A series of ints seperated by ONLY commas")
     parser.add_argument("-d", "--delay", default=0, type=float, help="how many secounds you want the comuter to wait after every step")
+    parser.add_argument("-s", "--stop", default=False, action="store_true")
     # args is a dict of the key-value pairs from the command-line
     args = vars(parser.parse_args())
     args["algorithm"] = args["algorithm"].split("-sort")[0]

@@ -58,7 +58,7 @@ def main():
 def initialize_list(args):
     match args["algorithm"]:
         case "bogo":
-            return BogoSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
+            return BogoSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"], stop=args["stop"])
         case "bubble":
             return BubbleSortList(algorithm=args["algorithm"], length=args["length"], seed=args["seed"], start_tuple=args["start_tuple"], delay=args["delay"])
         case "merge":

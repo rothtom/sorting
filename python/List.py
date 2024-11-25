@@ -12,7 +12,7 @@ DEFAULT_LIST_LENGTH = 100
 POSSIBLE_ALGORITHMS = ["bogo", "bubble", "selection", "merge", "quick"]
 
 HEIGHT = 720
-MAX_WIDTH = 500
+MAX_WIDTH = 1280
 
 MAX_PILLAR_HEIGHT = int(HEIGHT - 60 - 32 - 15)
 MARGIN = (HEIGHT - MAX_PILLAR_HEIGHT) / 2
@@ -25,7 +25,7 @@ font2 = pg.font.Font(open("fonts/Audiowide-Regular.ttf", "r"), 32)
 class List():
     # length ist hier optional, um besser mit bereits gegebenen Listen testen zu können.
     # wenn es eine liste zum starten gibt, ist die länge unnötig
-    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_tuple=None, delay=0):
+    def __init__(self, algorithm, length=None, seed=DEFAULT_RANDOM_SEED, start_tuple=None, delay=0, stop=False):
         """
         Creates a list of Pillars, randomly arranged, except if there is a start list of values - then it uses those.
         - start_tuple is an option for giving a prearranged list of values for the values of the pillars.
@@ -33,6 +33,7 @@ class List():
         - seed is an option for a random seed so everytime you run it you get a differently arranged list. the random seed is constructed by the current system time
         which ensures a different seed everytime you run it
         - algorithm keeps track of which algorythm is used
+        - stop desides wether the algorithm waits for the user to start sorting
         """
         
         
@@ -100,7 +101,7 @@ class List():
         self.img1 = font1.render(self.algorithm.upper() + "-SORT", True, "green")
         self.img1_x = (WIDTH // 2) - (self.img1.get_width() // 2)
         
-        self.stop = True
+        self.stop = stop
         
         
     def check_sorted(self, visualize=True):
