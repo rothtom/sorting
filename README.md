@@ -30,6 +30,7 @@ This is a project I created for school.
 10. your good to go
 
 ### With docker-compose:
+##### (Windows only)
 1. build and start it.
 2. to interact with it run docker-compose exec -it sorting /bin/bash
 3. run pytest tests.py
