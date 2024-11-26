@@ -16,6 +16,7 @@ This is a project I created for school.
 
 # Getting started:  
 
+### Without docker-compose:
 1. Download the github repo.
 2. cd into the project directory
 3. cd into the python directory
@@ -25,6 +26,14 @@ This is a project I created for school.
 6. activate that venv by running source .venv/bin/activate
 7. update the python package manager "pip" by running "pip install --upgrade pip"
 8. install all required packages py running "pip install -r requirements.txt"
+9. run pytest test.py
+10. your good to go
+
+### With docker-compose:
+1. build and start it.
+2. run pytest tests.py
+3. your good to go
+
 
 # Usage:  
 
