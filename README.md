@@ -31,8 +31,9 @@ This is a project I created for school.
 
 ### With docker-compose:
 1. build and start it.
-2. run pytest tests.py
-3. your good to go
+2. to interact with it run docker-compose exec -it sorting /bin/bash
+3. run pytest tests.py
+4. your good to go
 
 
 # Usage:  
