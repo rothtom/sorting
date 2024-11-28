@@ -4,8 +4,6 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame as pg
 import sys
 
-import time
-
 from arg_manipulation import check_usage
 from BogoSortList import BogoSortList
 from BubbleSortList import BubbleSortList
@@ -42,10 +40,11 @@ def main():
         if not list.check_sorted(visualize=False):
             list.draw(time=False)
             list.sort()
-            print(f"Time overall:   {list.time_elapsed.total_seconds():.6f} seconds")
-            print(f"Time drawing:   {list.time_drawing.total_seconds():.6f} seconds")
-            print(f"Time paused:    {list.time_paused.total_seconds():.6f} seconds")
-            print(f"Time sorted:    {list.time_sorted.total_seconds():.6f} seconds")
+            list.time_to_seconds()
+            print(f"Time overall:   {list.time_elapsed:.6f} seconds")
+            print(f"Time drawing:   {list.time_drawing:.6f} seconds ({((list.time_drawing / list.time_elapsed) * 100):.3f}%)")
+            print(f"Time paused:    {list.time_paused:.6f} seconds ({((list.time_paused / list.time_elapsed) * 100):.3f}%)")
+            print(f"Time sorted:    {list.time_sorted:.6f} seconds ({((list.time_sorted / list.time_elapsed) * 100):.3f}%)")
             print(f"Swapped a total of {list.swaps} times.")
             
             list.reset_highlights()

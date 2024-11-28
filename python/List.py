@@ -153,8 +153,8 @@ class List():
         self.screen.blit(self.img1, (self.img1_x, 0))
         
         # dispaly time after finishing
-        if self.time_sorted:
-            self.img2 = font2.render(f"Time spent sorting: {self.time_sorted.total_seconds():.6f} seconds", True, "green")
+        if self.time_sorted and type(self.time_sorted) != datetime.timedelta:
+            self.img2 = font2.render(f"Time spent sorting: {self.time_sorted:.6f} seconds", True, "green")
             self.img2_x = (WIDTH // 2) - (self.img2.get_width() // 2)
             self.screen.blit(self.img2, (self.img2_x, 60))
             
@@ -195,6 +195,12 @@ class List():
     def calculate_time(self) -> None:
         self.time_elapsed = self.end_time - self.start_time
         self.time_sorted = self.time_elapsed - self.time_drawing - self.time_paused
+        
+    def time_to_seconds(self):
+        self.time_elapsed = self.time_elapsed.total_seconds()
+        self.time_sorted = self.time_sorted.total_seconds()
+        self.time_drawing = self.time_drawing.total_seconds()
+        self.time_paused = self.time_paused.total_seconds()
 
     def reset_highlights(self) -> None:
         for pillar in self.pillars:
