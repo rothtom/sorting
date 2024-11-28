@@ -170,9 +170,10 @@ class List():
                     break
             if ((datetime.datetime.now() - before_wait) - waited_this_iteration).total_seconds() > self.delay:
                 break
-        draw_end = datetime.datetime.now()
-        draw_time = (draw_end - draw_start) - waited_this_iteration
+
         if time:
+            draw_end = datetime.datetime.now()
+            draw_time = (draw_end - draw_start) - waited_this_iteration
             self.time_drawing += datetime.timedelta(0, draw_time.total_seconds())
 
     def pause(self):
